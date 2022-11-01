@@ -6,7 +6,7 @@ import spring.notify.NotificationService;
 
 public class App {
     public static void main(String[] args) {
-        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("ns3-config.xml");
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("ns1-config.xml");
         NotificationService notificationService = applicationContext.getBean(NotificationService.class);
         notificationService.notify("hello that bad");
 

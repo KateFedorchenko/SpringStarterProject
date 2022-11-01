@@ -6,8 +6,11 @@
 
     <bean id="messageAppender" class="spring.notify.SystemOutMessageAppender"/>
 
+    <bean id="messageTransformer" class="spring.notify.TimestampMessageTransformer"/>
+
     <bean id="notificationService" class="spring.notify.NotificationServiceImpl">
         <constructor-arg name="messageAppender" ref="messageAppender"/>
+        <constructor-arg name="messageTransformer" ref="messageTransformer"/>
     </bean>
 
 

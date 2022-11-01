@@ -3,7 +3,7 @@ package spring.notify;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CensorFilterMessageTransformerImpl implements MessageTransformer {
+public class CensorFilterMessageTransformer implements MessageTransformer {
 
     @Override
     public String transform(String message) {
@@ -31,3 +31,7 @@ public class CensorFilterMessageTransformerImpl implements MessageTransformer {
         return badWords.containsValue(word);
     }
 }
+// No lower case! It matters. Save the register as in the original message. "Hello the bad" -> Hello the ***
+// Quantity of *** should be the same as in the word
+// No const as in HM. This class should have no const! Think over.
+
