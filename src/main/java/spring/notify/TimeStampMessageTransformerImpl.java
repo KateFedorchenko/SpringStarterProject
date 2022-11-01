@@ -10,7 +10,7 @@ public class TimeStampMessageTransformerImpl implements MessageTransformer {
         StringBuilder sb = new StringBuilder();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String date = simpleDateFormat.format(new Date());
-        sb.append(message).append(" ").append(date);
+        sb.append(message).append(" ").append(date).append(" ");
         return sb.toString();
     }
 }
