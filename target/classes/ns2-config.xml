@@ -8,7 +8,6 @@
         <constructor-arg name="file" value="D:\bean.txt"/>
     </bean>
 
-
     <bean id="notificationService" class="spring.notify.NotificationServiceImpl">
         <constructor-arg name="messageAppender" ref="messageAppender"/>
     </bean>

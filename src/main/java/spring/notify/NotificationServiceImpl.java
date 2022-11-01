@@ -1,6 +1,7 @@
 package spring.notify;
 
-public class NotificationServiceImpl implements NotificationService {
+
+public class NotificationServiceImpl implements NotificationService{
     private final MessageAppender messageAppender;
 
     public NotificationServiceImpl(MessageAppender messageAppender) {
@@ -9,9 +10,9 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void notify(String message) {
-        messageAppender.appendMessage(message);
-
+        TimeStampMessageTransformerImpl timeStampMessageTransformer = new TimeStampMessageTransformerImpl();
+        String transform = timeStampMessageTransformer.transform(message);
+        messageAppender.appendMessage(transform);
     }
-
 
 }
