@@ -1,19 +1,32 @@
 package spring.notify;
 
+import org.springframework.context.annotation.Primary;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 public class CensorFilterMessageTransformer implements MessageTransformer {
+    private BadWord badWord;
+
+    public CensorFilterMessageTransformer(BadWord badWord){
+        this.badWord=badWord;
+    }
 
     @Override
     public String transform(String message) {
-        String toLowerCase = message.toLowerCase();
-        String[] strings = toLowerCase.split(" ");
+        String[] strings = message.split(" ");
         StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < strings.length; i++) {
             if (isBadWord(strings[i])) {
-                sb.append("****").append(" ");
+                int length = strings[i].length();
+                for (int j = 0; j < length; j++) {
+                    sb.append("*");
+                }
+                sb.append(" ");
             } else {
                 sb.append(strings[i]).append(" ");
             }
@@ -22,13 +35,7 @@ public class CensorFilterMessageTransformer implements MessageTransformer {
     }
 
     private boolean isBadWord(String word) {
-        Map<Integer, String> badWords = new HashMap<>();
-        badWords.put(1, "bad");
-        badWords.put(2, "baddy");
-        badWords.put(3, "badly");
-        badWords.put(4, "worse");
-        badWords.put(5, "worst");
-        return badWords.containsValue(word);
+        return badWord.isBadWord(word);
     }
 }
 // No lower case! It matters. Save the register as in the original message. "Hello the bad" -> Hello the ***

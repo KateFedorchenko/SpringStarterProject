@@ -6,12 +6,41 @@
 
     <bean id="messageAppender" class="spring.notify.SystemOutMessageAppender"/>
 
-    <bean id="messageTransformer" class="spring.notify.TimestampMessageTransformer"/>
+    <bean id="TimestampMessageTransformer" class="spring.notify.TimestampMessageTransformer"/>
+
+    <bean id="CensorFilterMessageTransformer" class="spring.notify.CensorFilterMessageTransformer">
+        <constructor-arg name="badWord" ref="BadWord"/>
+    </bean>
+
+    <bean id="NoopMessageTransformer" class="spring.notify.NoopMessageTransformer"/>
+
+    <bean id="BadWord" class="spring.notify.badWord">
+        <constructor-arg name="badWord">
+            <list>
+                <value>bad</value>
+                <value>baddy</value>
+                <value>badly</value>
+                <value>worse</value>
+            </list>
+        </constructor-arg>
+    </bean>
 
     <bean id="notificationService" class="spring.notify.NotificationServiceImpl">
-        <constructor-arg name="messageAppender" ref="messageAppender"/>
-        <constructor-arg name="messageTransformer" ref="messageTransformer"/>
+        <constructor-arg name="messageAppenders">
+            <list>
+                <ref bean="messageAppender"/>
+            </list>
+        </constructor-arg>
+
+        <constructor-arg name="messageTransformers">
+            <list>
+                <ref bean="TimestampMessageTransformer"/>
+                <ref bean="CensorFilterMessageTransformer"/>
+                <ref bean="NoopMessageTransformer"/>
+            </list>
+        </constructor-arg>
     </bean>
+
 
 
 </beans>

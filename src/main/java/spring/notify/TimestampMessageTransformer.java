@@ -1,8 +1,13 @@
 package spring.notify;
 
+import org.springframework.context.annotation.Primary;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@Component
 public class TimestampMessageTransformer implements MessageTransformer {
 
     @Override
