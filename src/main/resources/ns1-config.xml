@@ -7,7 +7,7 @@
     <bean id="messageAppender" class="spring.notify.SystemOutMessageAppender"/>
     <bean id="timestampMessageTransformer" class="spring.notify.TimestampMessageTransformer"/>
     <bean id="censorFilterMessageTransformer" class="spring.notify.CensorFilterMessageTransformer">
-        <constructor-arg name="badWords" type="java.lang.String">
+        <constructor-arg name="badWords">
             <list>
                 <value>bad</value>
                 <value>baddy</value>
@@ -28,7 +28,7 @@
         <constructor-arg name="messageTransformers">
             <list>
                 <ref bean="timestampMessageTransformer"/>
-                <ref bean="censorFilterMessageTransformer">
+                <ref bean="censorFilterMessageTransformer"/>
                 <ref bean="noopMessageTransformer"/>
             </list>
         </constructor-arg>

@@ -1,19 +1,23 @@
 package spring.notify;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import java.lang.annotation.Target;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class CensorFilterMessageTransformer implements MessageTransformer {
-    private final List<String> badWords;
+    private final Set<String> badWords;
 
-    public CensorFilterMessageTransformer(List<String> badWords) {
-        this.badWords = badWords;
+    public CensorFilterMessageTransformer(@Value("#{'${spring.notify.bad.words}'.split(',')}") List<String> badWords) {
+        this.badWords = badWords.stream().map(String::toLowerCase).collect(Collectors.toSet());    //map(x -> x.toLowerCase())
     }
 
     @Override
@@ -36,7 +40,7 @@ public class CensorFilterMessageTransformer implements MessageTransformer {
     }
 
     private boolean isBadWord(String word) {
-        return badWords.contains(word);
+        return badWords.contains(word.toLowerCase());
     }
 }
 // No lower case! It matters. Save the register as in the original message. "Hello the bad" -> Hello the ***
