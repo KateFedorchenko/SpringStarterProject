@@ -5,14 +5,15 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Component
 public class CensorFilterMessageTransformer implements MessageTransformer {
-    private BadWord badWord;
+    private final List<String> badWords;
 
-    public CensorFilterMessageTransformer(BadWord badWord){
-        this.badWord=badWord;
+    public CensorFilterMessageTransformer(List<String> badWords) {
+        this.badWords = badWords;
     }
 
     @Override
@@ -35,7 +36,7 @@ public class CensorFilterMessageTransformer implements MessageTransformer {
     }
 
     private boolean isBadWord(String word) {
-        return badWord.isBadWord(word);
+        return badWords.contains(word);
     }
 }
 // No lower case! It matters. Save the register as in the original message. "Hello the bad" -> Hello the ***

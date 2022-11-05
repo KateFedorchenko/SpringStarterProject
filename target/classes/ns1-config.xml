@@ -5,17 +5,9 @@
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="messageAppender" class="spring.notify.SystemOutMessageAppender"/>
-
-    <bean id="TimestampMessageTransformer" class="spring.notify.TimestampMessageTransformer"/>
-
-    <bean id="CensorFilterMessageTransformer" class="spring.notify.CensorFilterMessageTransformer">
-        <constructor-arg name="badWord" ref="BadWord"/>
-    </bean>
-
-    <bean id="NoopMessageTransformer" class="spring.notify.NoopMessageTransformer"/>
-
-    <bean id="BadWord" class="spring.notify.badWord">
-        <constructor-arg name="badWord">
+    <bean id="timestampMessageTransformer" class="spring.notify.TimestampMessageTransformer"/>
+    <bean id="censorFilterMessageTransformer" class="spring.notify.CensorFilterMessageTransformer">
+        <constructor-arg name="badWords" type="java.lang.String">
             <list>
                 <value>bad</value>
                 <value>baddy</value>
@@ -24,6 +16,7 @@
             </list>
         </constructor-arg>
     </bean>
+    <bean id="noopMessageTransformer" class="spring.notify.NoopMessageTransformer"/>
 
     <bean id="notificationService" class="spring.notify.NotificationServiceImpl">
         <constructor-arg name="messageAppenders">
@@ -34,14 +27,11 @@
 
         <constructor-arg name="messageTransformers">
             <list>
-                <ref bean="TimestampMessageTransformer"/>
-                <ref bean="CensorFilterMessageTransformer"/>
-                <ref bean="NoopMessageTransformer"/>
+                <ref bean="timestampMessageTransformer"/>
+                <ref bean="censorFilterMessageTransformer">
+                <ref bean="noopMessageTransformer"/>
             </list>
         </constructor-arg>
     </bean>
-
-
-
 </beans>
 

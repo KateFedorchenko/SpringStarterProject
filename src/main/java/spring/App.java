@@ -11,7 +11,7 @@ public class App {
         ApplicationContext applicationContext = new AnnotationConfigApplicationContext("spring");
         NotificationService bean = applicationContext.getBean(NotificationService.class);
 
-        bean.notify("hello baddy");
+        bean.notify("hello bad");
 
 
     }
