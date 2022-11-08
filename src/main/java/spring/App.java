@@ -9,8 +9,8 @@ import spring.notify.NotificationServiceImpl;
 public class App {
     public static void main(String[] args) {
         ApplicationContext applicationContext = new AnnotationConfigApplicationContext("spring");
-        NotificationService s = applicationContext.getBean(NotificationService.class);
-        s.notify("bad", NotificationService.Importance.MEDIUM);
+        NotificationService bean = applicationContext.getBean(NotificationService.class);
+        bean.notify("bad", NotificationService.Importance.MEDIUM);
 
 
 

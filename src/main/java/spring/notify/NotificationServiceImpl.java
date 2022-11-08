@@ -1,21 +1,23 @@
 package spring.notify;
 
+import org.springframework.beans.factory.annotation.Value;
 import spring.anno.AwesomeService;
 
 import java.util.List;
 
 @AwesomeService
 public class NotificationServiceImpl implements NotificationService {
-    private final List<MessageAppender> messageAppenders;
+    private MessageAppender messageAppender;
     private final List<MessageTransformer> messageTransformers;
     private final Importance importance;
 
     public NotificationServiceImpl(
-            List<MessageAppender> messageAppenders,
-            /*@Qualifier("timestampMessageTransformer")*/ List<MessageTransformer> messageTransformers,
-           Importance importance
+           MessageAppender messageAppender,
+            /*@Qualifier("timestampMessageTransformer")*/
+            List<MessageTransformer> messageTransformers,
+            Importance importance
     ) {
-        this.messageAppenders = messageAppenders;
+        this.messageAppender = messageAppender;
         this.messageTransformers = messageTransformers;
         this.importance = importance;
     }
@@ -27,10 +29,20 @@ public class NotificationServiceImpl implements NotificationService {
             MessageTransformer mt = messageTransformers.get(i);
             transformedMessage = mt.transform(transformedMessage);
         }
-        for (int i = 0; i < messageAppenders.size(); i++) {
-            MessageAppender ma = messageAppenders.get(i);
-            ma.appendMessage(transformedMessage);
+        if(importance == Importance.CRITICAL){
+            messageAppender = new SystemOutMessageAppender();
+            messageAppender.appendMessage(transformedMessage);
+//            messageAppender = new CriticalLogsMessageAppender();
+        } else {
+//            messageAppender = new FileMessageAppender();
         }
+        messageAppender.appendMessage(transformedMessage);
+
+
+//        for (int i = 0; i < messageAppenders.size(); i++) {
+//            MessageAppender ma = messageAppenders.get(i);
+//            ma.appendMessage(transformedMessage);
+//        }
     }
 }
 

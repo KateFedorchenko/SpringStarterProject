@@ -8,11 +8,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 @Component
-public class FileMessageAppender implements MessageAppender {
+public class CriticalLogsMessageAppender implements MessageAppender {
     private final File file;
 
-
-    public FileMessageAppender(@Value("${spring.notify.message.appender.file}")File file) {
+    public CriticalLogsMessageAppender(@Value("${spring.notify.message.appender.critical_file}")File file) {
         this.file = file;
     }
 
