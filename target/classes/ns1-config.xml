@@ -32,6 +32,10 @@
                 <ref bean="noopMessageTransformer"/>
             </list>
         </constructor-arg>
+        <constructor-arg name="importance">
+            <value>MEDIUM</value>
+
+        </constructor-arg>
     </bean>
 </beans>
 

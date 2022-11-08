@@ -4,11 +4,8 @@
        xsi:schemaLocation="
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="messageAppender" class="spring.notify.FileMessageAppender">
-        <constructor-arg name="file" value="D:\bean.txt"/>
-    </bean>
-
-    <bean id="notificationService" class="spring.notify.NotificationServiceImpl">
-        <constructor-arg name="messageAppender" ref="messageAppender"/>
+    <bean id="testBean" class="spring.notify.TestBean">
+        <property name="str" value="Hello"/>
+        <property name="integer" value="12"/>
     </bean>
 </beans>
