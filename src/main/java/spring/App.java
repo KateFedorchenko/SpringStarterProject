@@ -12,6 +12,9 @@ public class App {
         bean.notify("bad", Importance.MEDIUM);
         bean.notify("low", Importance.LOW);
         bean.notify("critical", Importance.CRITICAL);
+        bean.notify("dgd", Importance.CRITICAL);
+        bean.notify("critgdgdical", Importance.CRITICAL);
+        bean.notify("critewfical", Importance.CRITICAL);
 
 
     }

@@ -27,8 +27,9 @@ public class NotificationServiceImpl implements NotificationService {
         }
 
         for (MessageAppender messageAppender : messageAppenders) {
-            Importance imp = messageAppender.getImportance();
-            if (importance == imp) {
+            List<Importance> importanceList = messageAppender.getListImportance();
+
+            if (importanceList.contains(importance)) {
                 messageAppender.appendMessage(transformedMessage);
             }
         }

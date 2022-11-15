@@ -1,8 +1,10 @@
 package spring.notify;
 
+import java.util.List;
+
 public interface MessageAppender {
 
     void appendMessage(String message);
 
-    Importance getImportance();
+    List<Importance> getListImportance();
 }

@@ -6,29 +6,32 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 
 @Component
 public class FileMessageAppender implements MessageAppender {
     private final File file;
-    private final Importance importance;
+    private final List<Importance> importanceList;
 
     public FileMessageAppender(@Value("${spring.notify.message.appender.file}") File file,
-                               @Value("${spring.notify.importance.medium}") Importance importance) {
+                               @Value("${spring.notify.message.appender.file.importance}")
+                               List<Importance> importanceList) {
         this.file = file;
-        this.importance = importance;
+        this.importanceList = importanceList;
     }
 
     @Override
     public void appendMessage(String message) {
         try (FileWriter fileWriter = new FileWriter(file, true)) {
             fileWriter.write(message);
+            fileWriter.write("\n");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public Importance getImportance() {
-        return importance;
+    public List<Importance> getListImportance() {
+        return importanceList;
     }
 }
