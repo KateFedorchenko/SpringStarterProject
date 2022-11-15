@@ -10,10 +10,12 @@ import java.io.IOException;
 @Component
 public class FileMessageAppender implements MessageAppender {
     private final File file;
+    private final Importance importance;
 
-
-    public FileMessageAppender(@Value("${spring.notify.message.appender.file}")File file) {
+    public FileMessageAppender(@Value("${spring.notify.message.appender.file}") File file,
+                               @Value("${spring.notify.importance.medium}") Importance importance) {
         this.file = file;
+        this.importance = importance;
     }
 
     @Override
@@ -23,5 +25,10 @@ public class FileMessageAppender implements MessageAppender {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public Importance getImportance() {
+        return importance;
     }
 }

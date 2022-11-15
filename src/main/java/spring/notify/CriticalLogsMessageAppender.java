@@ -10,9 +10,12 @@ import java.io.IOException;
 @Component
 public class CriticalLogsMessageAppender implements MessageAppender {
     private final File file;
+    private final Importance importance;
 
-    public CriticalLogsMessageAppender(@Value("${spring.notify.message.appender.critical_file}")File file) {
+    public CriticalLogsMessageAppender(@Value("${spring.notify.message.appender.critical_file}")File file,
+                                       @Value("${spring.notify.importance.critical}") Importance importance) {
         this.file = file;
+        this.importance = importance;
     }
 
     @Override
@@ -22,5 +25,10 @@ public class CriticalLogsMessageAppender implements MessageAppender {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public Importance getImportance() {
+        return importance;
     }
 }

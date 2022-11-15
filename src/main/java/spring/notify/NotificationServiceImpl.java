@@ -1,48 +1,38 @@
 package spring.notify;
 
-import org.springframework.beans.factory.annotation.Value;
 import spring.anno.AwesomeService;
 
 import java.util.List;
 
 @AwesomeService
 public class NotificationServiceImpl implements NotificationService {
-    private MessageAppender messageAppender;
+    private final List<MessageAppender> messageAppenders;
     private final List<MessageTransformer> messageTransformers;
-    private final Importance importance;
 
     public NotificationServiceImpl(
-           MessageAppender messageAppender,
-            /*@Qualifier("timestampMessageTransformer")*/
-            List<MessageTransformer> messageTransformers,
-            Importance importance
+            List<MessageAppender> messageAppenders,
+            List<MessageTransformer> messageTransformers
     ) {
-        this.messageAppender = messageAppender;
+        this.messageAppenders = messageAppenders;
         this.messageTransformers = messageTransformers;
-        this.importance = importance;
+
     }
 
     @Override
     public void notify(String message, Importance importance) {
         String transformedMessage = message;
-        for (int i = 0; i < messageTransformers.size(); i++) {
-            MessageTransformer mt = messageTransformers.get(i);
+
+        for (MessageTransformer mt : messageTransformers) {
             transformedMessage = mt.transform(transformedMessage);
         }
-        if(importance == Importance.CRITICAL){
-            messageAppender = new SystemOutMessageAppender();
-            messageAppender.appendMessage(transformedMessage);
-//            messageAppender = new CriticalLogsMessageAppender();
-        } else {
-//            messageAppender = new FileMessageAppender();
+
+        for (MessageAppender messageAppender : messageAppenders) {
+            Importance imp = messageAppender.getImportance();
+            if (importance == imp) {
+                messageAppender.appendMessage(transformedMessage);
+            }
         }
-        messageAppender.appendMessage(transformedMessage);
 
-
-//        for (int i = 0; i < messageAppenders.size(); i++) {
-//            MessageAppender ma = messageAppenders.get(i);
-//            ma.appendMessage(transformedMessage);
-//        }
     }
 }
 
