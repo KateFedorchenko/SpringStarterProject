@@ -8,7 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-@Component
+
 public class FileMessageAppender implements MessageAppender {
     private final File file;
     private final List<Importance> importanceList;
