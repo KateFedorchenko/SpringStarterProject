@@ -6,16 +6,10 @@ import spring.notify.Importance;
 import spring.notify.NotificationService;
 
 public class App {
-    public static void main(String[] args) {
-        ApplicationContext applicationContext = new AnnotationConfigApplicationContext("spring");
-        NotificationService bean = applicationContext.getBean(NotificationService.class);
-        bean.notify("bad", Importance.MEDIUM);
-        bean.notify("low", Importance.LOW);
-        bean.notify("critical", Importance.CRITICAL);
-        bean.notify("dgd", Importance.CRITICAL);
-        bean.notify("critgdgdical", Importance.CRITICAL);
-        bean.notify("critewfical", Importance.CRITICAL);
-
+    public static void main(String[] args) throws Exception {
+        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext("spring");
+        Thread.sleep(50_000);
+        applicationContext.close();
 
     }
 }

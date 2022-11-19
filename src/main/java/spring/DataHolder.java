@@ -1,5 +1,7 @@
 package spring;
 
+import spring.anno.AwesomeService;
+
 public class DataHolder {
     private String string;
 

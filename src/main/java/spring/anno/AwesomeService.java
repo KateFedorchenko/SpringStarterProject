@@ -8,11 +8,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.SOURCE)
+@Target({ElementType.ANNOTATION_TYPE,ElementType.TYPE})
 @Component
 public @interface AwesomeService {
 
 }
 
-// 1)
+// Annotation processor to be read
