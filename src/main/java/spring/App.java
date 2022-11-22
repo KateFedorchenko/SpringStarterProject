@@ -8,7 +8,7 @@ import spring.notify.NotificationService;
 public class App {
     public static void main(String[] args) throws Exception {
         AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext("spring");
-        Thread.sleep(50_000);
+        Thread.sleep(5_000);
         applicationContext.close();
 
     }

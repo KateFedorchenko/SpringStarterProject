@@ -1,10 +1,11 @@
 package spring.notify;
 
+import org.springframework.stereotype.Service;
 import spring.anno.AwesomeService;
 
 import java.util.List;
 
-@AwesomeService
+@Service
 public class NotificationServiceImpl implements NotificationService {
     private final List<MessageAppender> messageAppenders;
     private final List<MessageTransformer> messageTransformers;

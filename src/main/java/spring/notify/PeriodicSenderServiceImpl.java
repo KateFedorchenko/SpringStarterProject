@@ -4,28 +4,41 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.util.concurrent.*;
 
 @Component
 public class PeriodicSenderServiceImpl implements PeriodicSenderService {
-    @Value("${spring.notify.periodic.sender.message}")
-    private String message;
+    private final String message;
 
-    private NotificationService notificationService;
-    @Override
-    public void send(int count) throws InterruptedException {
-        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext("spring");
-        NotificationService bean = applicationContext.getBean(NotificationService.class);
+    private final NotificationService notificationService;
 
-        CountDownLatch lock = new CountDownLatch(count);
+    private final ExecutorService executorService;
 
-        ScheduledExecutorService executor = Executors.newScheduledThreadPool(5);
-        ScheduledFuture<?> future = executor.scheduleAtFixedRate(() -> {
-            bean.notify(message, Importance.LOW);
-            lock.countDown();
-        }, 500, 100, TimeUnit.MILLISECONDS);
+    public PeriodicSenderServiceImpl(@Value("${spring.notify.periodic.sender.message}") String message,
+                                     NotificationService notificationService) {
+        this.message = message;
+        this.notificationService = notificationService;
+        executorService = Executors.newFixedThreadPool(2);
+        executorService.submit(this::foo);
+    }
 
-        lock.await(1000, TimeUnit.MILLISECONDS);
-        future.cancel(true);
+    private void foo(){
+        int n = 2;
+        int interval = 1000; // 1 sec
+        for (int i = 0; i < n; i++) {
+            notificationService.notify(message, Importance.LOW);
+            try {
+                Thread.sleep(interval);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    @PreDestroy
+    private void onDestroy(){
+        executorService.shutdown();
     }
 }
