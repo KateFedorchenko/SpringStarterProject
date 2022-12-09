@@ -4,11 +4,13 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import spring.notify.Importance;
 import spring.notify.NotificationService;
+import spring.notify.PeriodicSenderService;
 
 public class App {
     public static void main(String[] args) throws Exception {
         AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext("spring");
-        Thread.sleep(5_000);
+        PeriodicSenderService bean = applicationContext.getBean(PeriodicSenderService.class);
+        bean.send("Hello",100,2, Importance.CRITICAL);
         applicationContext.close();
 
     }
