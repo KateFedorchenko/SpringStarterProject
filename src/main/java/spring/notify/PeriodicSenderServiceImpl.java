@@ -14,7 +14,7 @@ import java.util.concurrent.*;
 
 @Component
 public class PeriodicSenderServiceImpl implements PeriodicSenderService {
-    static class MessageInfo {
+    private static class MessageInfo {
         private String message;
         private Importance importance;
 

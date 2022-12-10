@@ -11,6 +11,8 @@ public class App {
         AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext("spring");
         PeriodicSenderService bean = applicationContext.getBean(PeriodicSenderService.class);
         bean.send("Hello",100,2, Importance.CRITICAL);
+        bean.send("boo",120,3,Importance.MEDIUM);
+        bean.send("foo",130,2,Importance.LOW);
         applicationContext.close();
 
     }
