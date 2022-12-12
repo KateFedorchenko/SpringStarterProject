@@ -8,6 +8,6 @@ import spring.anno.ExceptionHandler;
 public class ExceptionNotificationFailHandler implements NotificationFailHandler {
     @Override
     public void handle(String message, Importance importance) {
-
+        System.err.println("You do not have rights to write in a file!");
     }
 }

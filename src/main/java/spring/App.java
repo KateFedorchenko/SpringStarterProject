@@ -10,8 +10,10 @@ public class App {
     public static void main(String[] args) throws Exception {
         AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext("spring");
         NotificationService bean = applicationContext.getBean(NotificationService.class);
-        bean.notify("spam",Importance.CRITICAL);
-        bean.notify("I am not spam",Importance.CRITICAL);
+        bean.notify("CRITICAL",Importance.CRITICAL);
+        bean.notify("LOW",Importance.LOW);
+        bean.notify("ad",Importance.MEDIUM);
+        bean.notify("MEDIUM",Importance.MEDIUM);
         applicationContext.close();
 
     }

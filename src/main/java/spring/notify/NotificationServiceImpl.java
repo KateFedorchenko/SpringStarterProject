@@ -8,6 +8,7 @@ import spring.anno.TeamBlue;
 import spring.anno.TeamRed;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class NotificationServiceImpl implements NotificationService {
@@ -37,7 +38,11 @@ public class NotificationServiceImpl implements NotificationService {
     public void notify(String message, Importance importance) {
         String transformedMessage = message;
 
-        if (!originalMessageFilter.filter(message)) {
+        if (originalMessageFilter.filter(message)) {
+            return;
+        }
+
+        if (transformedMessageFilter.filter(message)) {
             return;
         }
 
@@ -45,15 +50,16 @@ public class NotificationServiceImpl implements NotificationService {
             transformedMessage = mt.transform(transformedMessage);
         }
 
-        if (!transformedMessageFilter.filter(transformedMessage)) {
-            return;
-        }
-
         for (MessageAppender messageAppender : messageAppenders) {
             List<Importance> importanceList = messageAppender.getListImportance();
 
             if (importanceList.contains(importance)) {
-                messageAppender.appendMessage(transformedMessage);
+                try {
+                    messageAppender.appendMessage(transformedMessage);          // 1) can I use here try-with-resources? how?
+                } catch (RuntimeException e) {                                  // 2) why FileNotFoundExc cannot be used?
+                    exceptionHandler.handle(transformedMessage, importance);
+                }
+
             }
         }
     }
