@@ -1,6 +1,7 @@
 package spring.notify;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
+@Lazy
 public class CensorFilterMessageTransformer implements MessageTransformer {
     private final Set<String> badWords;
 

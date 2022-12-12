@@ -9,10 +9,9 @@ import spring.notify.PeriodicSenderService;
 public class App {
     public static void main(String[] args) throws Exception {
         AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext("spring");
-        PeriodicSenderService bean = applicationContext.getBean(PeriodicSenderService.class);
-        bean.send("Hello",100,2, Importance.CRITICAL);
-        bean.send("boo",120,3,Importance.MEDIUM);
-        bean.send("foo",130,2,Importance.LOW);
+        NotificationService bean = applicationContext.getBean(NotificationService.class);
+        bean.notify("spam",Importance.CRITICAL);
+        bean.notify("I am not spam",Importance.CRITICAL);
         applicationContext.close();
 
     }
