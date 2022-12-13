@@ -13,6 +13,11 @@ public class App {
         bean.notify("CRITICAL",Importance.CRITICAL);
         bean.notify("LOW",Importance.LOW);
         bean.notify("ad",Importance.MEDIUM);
+        bean.notify("ad",Importance.MEDIUM);
+        bean.notify("ad",Importance.MEDIUM);
+        bean.notify("ad",Importance.MEDIUM);
+        bean.notify("ad",Importance.MEDIUM);
+        bean.notify("ad",Importance.MEDIUM);
         bean.notify("MEDIUM",Importance.MEDIUM);
         applicationContext.close();
 

@@ -7,6 +7,9 @@ import spring.anno.FilterHandler;
 import spring.anno.TeamBlue;
 import spring.anno.TeamRed;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,6 +21,7 @@ public class NotificationServiceImpl implements NotificationService {
     private final MessageFilter transformedMessageFilter;
     private final NotificationFailHandler exceptionHandler;
     private final NotificationFailHandler filterHandler;
+    private List<Long> filterFailedTime = new ArrayList<>();
 
     public NotificationServiceImpl(
             List<MessageAppender> messageAppenders,
@@ -38,11 +42,17 @@ public class NotificationServiceImpl implements NotificationService {
     public void notify(String message, Importance importance) {
         String transformedMessage = message;
 
-        if (originalMessageFilter.filter(message)) {
-            return;
-        }
-
-        if (transformedMessageFilter.filter(message)) {
+        if (originalMessageFilter.filter(message) || transformedMessageFilter.filter(message)) {
+            filterFailedTime.add(System.currentTimeMillis()/1000);
+            int size = filterFailedTime.size();
+            if(size >= 5){
+                Long lastDate = filterFailedTime.get(size - 1);
+                Long firstDate = filterFailedTime.get(size - 5);
+                if((lastDate - firstDate) <= 60){
+                    filterHandler.handle(message,importance);
+                    filterFailedTime.removeAll(filterFailedTime);
+                }
+            }
             return;
         }
 
@@ -55,8 +65,8 @@ public class NotificationServiceImpl implements NotificationService {
 
             if (importanceList.contains(importance)) {
                 try {
-                    messageAppender.appendMessage(transformedMessage);          // 1) can I use here try-with-resources? how?
-                } catch (RuntimeException e) {                                  // 2) why FileNotFoundExc cannot be used?
+                    messageAppender.appendMessage(transformedMessage);
+                } catch (RuntimeException e) {
                     exceptionHandler.handle(transformedMessage, importance);
                 }
 

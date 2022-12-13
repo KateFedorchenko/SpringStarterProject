@@ -8,6 +8,7 @@ import spring.anno.FilterHandler;
 public class FilterNotificationFailHandler implements NotificationFailHandler {
     @Override
     public void handle(String message, Importance importance) {
+        System.err.println("Too many filters have been failed");
 
     }
 }
