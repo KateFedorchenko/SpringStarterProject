@@ -16,6 +16,7 @@ public class App {
         bean.notify("ad",Importance.MEDIUM);
         bean.notify("ad",Importance.MEDIUM);
         bean.notify("ad",Importance.MEDIUM);
+        Thread.sleep(2000);
         bean.notify("ad",Importance.MEDIUM);
         bean.notify("ad",Importance.MEDIUM);
         bean.notify("MEDIUM",Importance.MEDIUM);

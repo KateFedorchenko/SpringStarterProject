@@ -21,7 +21,7 @@ public class NotificationServiceImpl implements NotificationService {
     private final MessageFilter transformedMessageFilter;
     private final NotificationFailHandler exceptionHandler;
     private final NotificationFailHandler filterHandler;
-    private List<Long> filterFailedTime = new ArrayList<>();
+    private final List<Long> filterFailedTime = new ArrayList<>();
 
     public NotificationServiceImpl(
             List<MessageAppender> messageAppenders,
@@ -43,16 +43,7 @@ public class NotificationServiceImpl implements NotificationService {
         String transformedMessage = message;
 
         if (originalMessageFilter.filter(message) || transformedMessageFilter.filter(message)) {
-            filterFailedTime.add(System.currentTimeMillis()/1000);
-            int size = filterFailedTime.size();
-            if(size >= 5){
-                Long lastDate = filterFailedTime.get(size - 1);
-                Long firstDate = filterFailedTime.get(size - 5);
-                if((lastDate - firstDate) <= 60){
-                    filterHandler.handle(message,importance);
-                    filterFailedTime.removeAll(filterFailedTime);
-                }
-            }
+            filterHandler.handle(message,importance);
             return;
         }
 
