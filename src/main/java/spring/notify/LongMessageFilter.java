@@ -16,6 +16,6 @@ public class LongMessageFilter implements MessageFilter {
 
     @Override
     public boolean filter(String message) {
-        return message.length() > maxMessageLength;
+        return message.length() < maxMessageLength;
     }
 }

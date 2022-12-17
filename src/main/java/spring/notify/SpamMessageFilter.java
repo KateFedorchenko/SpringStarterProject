@@ -17,6 +17,6 @@ public class SpamMessageFilter implements MessageFilter {
 
     @Override
     public boolean filter(String message) {
-        return spamWords.contains(message);
+        return !spamWords.contains(message);
     }
 }

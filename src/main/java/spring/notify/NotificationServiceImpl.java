@@ -21,7 +21,6 @@ public class NotificationServiceImpl implements NotificationService {
     private final MessageFilter transformedMessageFilter;
     private final NotificationFailHandler exceptionHandler;
     private final NotificationFailHandler filterHandler;
-    private final List<Long> filterFailedTime = new ArrayList<>();
 
     public NotificationServiceImpl(
             List<MessageAppender> messageAppenders,
@@ -41,27 +40,30 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public void notify(String message, Importance importance) {
         String transformedMessage = message;
-
-        if (originalMessageFilter.filter(message) || transformedMessageFilter.filter(message)) {
-            filterHandler.handle(message,importance);
-            return;
-        }
-
-        for (MessageTransformer mt : messageTransformers) {
-            transformedMessage = mt.transform(transformedMessage);
-        }
-
-        for (MessageAppender messageAppender : messageAppenders) {
-            List<Importance> importanceList = messageAppender.getListImportance();
-
-            if (importanceList.contains(importance)) {
-                try {
-                    messageAppender.appendMessage(transformedMessage);
-                } catch (RuntimeException e) {
-                    exceptionHandler.handle(transformedMessage, importance);
-                }
-
+        try {
+            if (!originalMessageFilter.filter(transformedMessage)) {
+                filterHandler.handle(transformedMessage, importance);
+                return;
             }
+
+            for (MessageTransformer mt : messageTransformers) {
+                transformedMessage = mt.transform(transformedMessage);
+            }
+
+            if (!transformedMessageFilter.filter(transformedMessage)) {
+                filterHandler.handle(transformedMessage, importance);
+                return;
+            }
+
+            for (MessageAppender messageAppender : messageAppenders) {
+                List<Importance> importanceList = messageAppender.getListImportance();
+
+                if (importanceList.contains(importance)) {
+                    messageAppender.appendMessage(transformedMessage);
+                }
+            }
+        } catch (RuntimeException e) {
+            exceptionHandler.handle(transformedMessage, importance);
         }
     }
 }
