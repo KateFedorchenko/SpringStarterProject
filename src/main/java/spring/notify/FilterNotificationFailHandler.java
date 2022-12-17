@@ -29,39 +29,21 @@ public class FilterNotificationFailHandler implements NotificationFailHandler {
                 failureTime.clear();
             }
         }
-
-
-//        int size = filterFailedTime.size();
-//        if(size >= 5){
-//            Long lastDate = filterFailedTime.get(size - 1);
-//            Long firstDate = filterFailedTime.get(size - 5);
-//            if((lastDate-firstDate) <= 60){
-//                System.err.println("Too many filters have been failed");
-//                filterFailedTime.clear();
-//            }
-//        }
     }
 
 //    public static int findMaxAverage(int[] nums, int k) {
-//        //If the array does not contain k elements it is not eligible
-//        if (nums.length < k)
+//        if (nums.length < k) {
 //            return -1;
-//        //Declaring the minimum
+//        }
 //        int max = 0;
-//        //Finding the sum of first k elements
 //        for (int i = 0; i < k; i++)
 //            max = max + nums[i];
 //        int cur = max;
-//        //As the sliding window moves
-//        //We move the start and end index by 1
 //        for (int i = k; i < nums.length; i++) {
-//            //Thus we remove the initial index value
 //            cur = cur - nums[i - k] + nums[i];
-//            //And add the current index value
 //            max = Math.max(cur, max);
 //        }
 //        return max / k;
-//
 //    }
 
 }
